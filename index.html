@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una sorpresa para ti</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <audio id="musicaFondo" src="cancion.mp3"></audio>
+
+    <div id="escenario">
+
+        <div id="contenedor-sobre" class="visible">
+            <div class="instruccion">Toca el sobre para abrir</div>
+            
+            <div class="sobre" id="sobre-interactivo">
+                <div class="solapa"></div>
+                <div class="bolsillo"></div>
+                
+                <div class="carta" id="carta-fisica">
+                    <img src="carta.jpg" alt="Mi carta para ti">
+                    <button id="btn-cerrar">Cerrar carta</button>
+                </div>
+                
+                <div class="frente"></div>
+            </div>
+        </div>
+
+        <div id="contenedor-foto" class="oculto">
+            <img src="foto-final.jpg" alt="Un recuerdo especial" class="foto-final">
+            <p class="mensaje-final">Con mucho cariño.</p> 
+            <button id="btn-volver">Leer de nuevo</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>

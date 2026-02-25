@@ -1,0 +1,230 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Borramos el overflow: hidden de aquí */
+}
+
+#escenario {
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* --- ESTADOS DE VISIBILIDAD --- */
+.oculto {
+    display: none !important;
+}
+
+.visible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* --- EL SOBRE --- */
+.instruccion {
+    color: #ffffff;
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    /* Animación para que el texto palpite suavemente */
+    animation: latido 2s infinite; 
+}
+
+@keyframes latido {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.sobre {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #e07a5f; /* Color coral base del sobre */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.sobre:hover {
+    transform: translateY(-5px); /* Pequeño salto al pasar el mouse (si lo abre en PC) */
+}
+
+/* La solapa (parte superior que se abre) */
+.solapa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 120px solid #d4684b; /* Un tono un poco más oscuro para dar profundidad */
+    transform-origin: top;
+    transition: transform 0.6s ease-in-out, z-index 0.2s;
+    z-index: 4; /* Al frente cuando está cerrado */
+}
+
+/* El bolsillo (parte inferior y lados) */
+.frente {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid #e27559;
+    border-right: 150px solid #e27559;
+    border-bottom: 100px solid #d86447;
+    border-top: 100px solid transparent;
+    z-index: 3;
+    pointer-events: none; /* Para que el clic lo registre el sobre completo */
+}
+
+/* --- LA CARTA FÍSICA --- */
+.carta {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 180px; /* Tamaño inicial oculta en el sobre */
+    background: #fdfbf7; /* Color papel */
+    z-index: 2;
+    transition: transform 0.8s ease-in-out, height 0.8s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-y: auto; /* Permite deslizar si la carta es muy larga */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.carta img {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+}
+
+/* --- BOTÓN CERRAR CARTA --- */
+#btn-cerrar {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 12px 25px;
+    background-color: #2a9d8f; /* Tono verde azulado vibrante */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0;
+    display: none;
+    transition: background-color 0.3s;
+}
+
+#btn-cerrar:hover {
+    background-color: #21867a;
+}
+
+/* --- ANIMACIONES DE APERTURA --- */
+
+/* 1. Hacemos que el sobre baje un poco para dar espacio a la carta */
+.sobre.abierto {
+    transform: translateY(30vh); 
+    cursor: default;
+}
+
+/* 2. Evitamos que el sobre brinque si pasas el mouse por encima cuando ya está abierto */
+.sobre.abierto:hover {
+    transform: translateY(30vh);
+}
+
+.sobre.abierto .solapa {
+    transform: rotateX(180deg);
+    z-index: 1; /* Se va hacia atrás para dejar salir la carta */
+}
+
+/* 3. Ajustamos cuánto sube la carta para que encuadre perfecto */
+.sobre.abierto .carta {
+    transform: translateX(-50%) translateY(-180px); /* Sube un poco menos que antes */
+    height: 60vh; /* Ajustamos la altura máxima */
+    z-index: 5; /* Viene al frente de todo */
+    cursor: default;
+}
+
+.sobre.abierto #btn-cerrar {
+    display: block;
+    animation: aparecerBoton 1s forwards;
+    animation-delay: 0.8s; 
+}
+
+@keyframes aparecerBoton {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- LA FOTO FINAL --- */
+#contenedor-foto {
+    text-align: center;
+    animation: aparecerSuave 1.5s ease;
+}
+
+.foto-final {
+    max-width: 90vw;
+    max-height: 75vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    border: 6px solid white; /* Efecto de fotografía impresa */
+}
+
+.mensaje-final {
+    color: #ffffff;
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+@keyframes aparecerSuave {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- BOTÓN LEER DE NUEVO --- */
+#btn-volver {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background-color: #e07a5f; /* Color coral del sobre */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btn-volver:hover {
+    background-color: #d4684b;
+    transform: scale(1.05); /* Se hace un poquito más grande al pasar el mouse */
+}
